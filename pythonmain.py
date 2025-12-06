@@ -5,8 +5,6 @@ import json
 
 class CloudConnector:
     def __init__(self):
-        # [VULNERABILITY HIGH] Hardcoded AWS Credentials
-        # Scanners (Trivy, Gitleaks) will flag 'AKIA' patterns immediately.
         self.aws_access_key = "AKIAIOSFODNN7EXAMPLE" 
         self.aws_secret_key = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
         self.region = "us-east-1"
@@ -27,9 +25,6 @@ def get_user_metadata(user_input_id):
     conn = sqlite3.connect('users.db')
     cursor = conn.cursor()
     
-    # [VULNERABILITY HIGH] SQL Injection
-    # Using f-strings allows an attacker to manipulate the query
-    # Example input: "1' OR '1'='1" dumps the whole table.
     query = f"SELECT * FROM users WHERE id = '{user_input_id}'"
     
     cursor.execute(query)
@@ -40,9 +35,6 @@ def get_user_metadata(user_input_id):
 def debug_config(config_str):
     print("Loading custom configuration...")
     
-    # [VULNERABILITY CRITICAL] Arbitrary Code Execution
-    # Using eval() on passed strings allows attackers to run python code.
-    # Example input: "__import__('os').system('rm -rf /')"
     config = eval(config_str)
     
     return config
