@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-app
+  labels:
+    app: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo
+  template:
+    metadata:
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: demo-container
+        image: nginx:latest
+        securityContext:
+          # VULNERABILITY: Privileged Container
+          # Allows the container to access host devices and kernel capabilities.
+          privileged: true
+          # VULNERABILITY: Running as Root
+          runAsUser: 0
+        ports:
+        - containerPort: 80
