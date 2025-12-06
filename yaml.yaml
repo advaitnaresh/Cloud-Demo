@@ -18,10 +18,7 @@ spec:
       - name: demo-container
         image: nginx:latest
         securityContext:
-          # VULNERABILITY: Privileged Container
-          # Allows the container to access host devices and kernel capabilities.
           privileged: true
-          # VULNERABILITY: Running as Root
           runAsUser: 0
         ports:
         - containerPort: 80
